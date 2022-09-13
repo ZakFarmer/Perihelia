@@ -4,12 +4,18 @@ use bevy::prelude::*;
 pub struct Mass(pub f32);
 
 #[derive(Component, Default)]
+pub struct Radius(pub f32);
+
+#[derive(Component, Default)]
 pub struct Acceleration(pub Vec3);
 
 #[derive(Component, Default)]
-pub struct AngularVelocity(pub Vec3);
+pub struct AngularMomentum(pub Vec3);
 #[derive(Component, Default)]
-pub struct LinearVelocity(pub Vec3);
+pub struct LinearMomentum(pub Vec3);
+
+#[derive(Component, Default)]
+pub struct Orientation(pub Quat);
 
 #[derive(Component)]
 pub struct BlackHole;
@@ -19,7 +25,9 @@ pub struct BodyBundle {
     #[bundle]
     pub pbr: PbrBundle,
     pub mass: Mass,
-    pub angular_velocity: AngularVelocity,
-    pub linear_velocity: LinearVelocity,
+    pub radius: Radius,
+    pub angular_momentum: AngularMomentum,
+    pub linear_momentum: LinearMomentum,
+    pub orientation: Orientation,
     pub acceleration: Acceleration,
 }

@@ -4,7 +4,7 @@ use rand::Rng;
 
 use crate::body::*;
 
-const NUM_BODIES: usize = 200;
+const NUM_BODIES: usize = 40;
 
 pub fn spawn_bodies(
     mut commands: Commands,
@@ -44,9 +44,11 @@ pub fn spawn_bodies(
                     ..default()
                 },
                 mass: Mass(mass),
+                radius: Radius(radius),
                 acceleration: Acceleration(Vec3::ZERO),
-                angular_velocity: AngularVelocity(Vec3::ZERO),
-                linear_velocity: LinearVelocity(Vec3::ZERO),
+                angular_momentum: AngularMomentum(Vec3::ZERO),
+                linear_momentum: LinearMomentum(Vec3::ZERO),
+                orientation: Orientation(Quat::IDENTITY),
             })
             .with_children(|p| {
                 p.spawn_bundle(PointLightBundle {
@@ -73,7 +75,7 @@ pub fn spawn_black_hole(
         subdivisions: 3,
     }));
 
-    let bh_radius: f32 = 1.;
+    let _bh_radius: f32 = 1.;
 
     commands
         .spawn_bundle(BodyBundle {
@@ -88,9 +90,11 @@ pub fn spawn_black_hole(
                 ..default()
             },
             mass: Mass(500.),
+            radius: Radius(20.),
             acceleration: Acceleration(Vec3::ZERO),
-            angular_velocity: AngularVelocity(Vec3::ZERO),
-            linear_velocity: LinearVelocity(Vec3::ZERO),
+            angular_momentum: AngularMomentum(Vec3::ZERO),
+            linear_momentum: LinearMomentum(Vec3::ZERO),
+            orientation: Orientation(Quat::IDENTITY),
         })
         .insert(BlackHole);
 }

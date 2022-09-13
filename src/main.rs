@@ -23,7 +23,7 @@ fn main() {
             ..default()
         })
         .add_startup_system(spawn_bodies)
-        .add_startup_system(spawn_black_hole)
+        //.add_startup_system(spawn_black_hole)
         //.add_startup_system(spawn_star)
         .add_stage_after(
             CoreStage::Update,
