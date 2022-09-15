@@ -16,6 +16,13 @@ const DELTA_TIME: f64 = 0.01;
 #[bevy_main]
 fn main() {
     App::new()
+        .insert_resource(WindowDescriptor {
+            title: "Perihelia".to_string(),
+            width: 1920.,
+            height: 1080.,
+            present_mode: bevy::window::PresentMode::Fifo,
+            ..default()
+        })
         .add_plugins(DefaultPlugins)
         .add_plugin(PlayerPlugin)
         .insert_resource(AmbientLight {
