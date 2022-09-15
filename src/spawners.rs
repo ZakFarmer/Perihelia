@@ -4,7 +4,7 @@ use rand::Rng;
 
 use crate::body::*;
 
-const NUM_BODIES: usize = 40;
+const NUM_BODIES: usize = 500;
 
 pub fn spawn_bodies(
     mut commands: Commands,
