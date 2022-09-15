@@ -1,6 +1,4 @@
-use std::{
-    ops::{Div, Mul},
-};
+use std::ops::{Div, Mul};
 
 use bevy::prelude::*;
 
@@ -31,7 +29,7 @@ pub fn attract_bodies(
 
         //println!("Radii: {:?}", (*r1 + *r2));
 
-        if distance_sq.sqrt() <= (*r1 + *r2) {
+        if distance_sq.sqrt() <= (*r1 + *r2 + 0.01) {
             let (new_velocity1, new_velocity2) = calculate_velocities_after_collision(
                 velocity1,
                 velocity2,
