@@ -24,6 +24,7 @@ fn main() {
             width: SCREEN_WIDTH as f32,
             height: SCREEN_HEIGHT as f32,
             present_mode: bevy::window::PresentMode::Fifo,
+            mode: bevy::window::WindowMode::BorderlessFullscreen,
             ..default()
         })
         .add_plugins(DefaultPlugins)
