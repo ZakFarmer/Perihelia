@@ -1,14 +1,15 @@
-use std::{
-    ops::{Div, Mul},
-};
+use std::ops::{Div, Mul};
 
 use bevy::prelude::*;
 
-use crate::body::*;
+use crate::physics::constants::*;
+use crate::physics::helpers::*;
+use crate::physics::types::*;
 
-const CONSTANT_G: f32 = 6.67 * 10e-11;
-const DELTA_TIME: f32 = 0.1;
-
+/// Attracts the bodies towards eachother using Newton's law of universal gravitation
+///
+/// Also deals with the collision although I'm thinking it might be better to take this out into its own
+/// module for more thorough testing.
 pub fn attract_bodies(
     mut query: Query<(
         &Mass,
@@ -31,7 +32,7 @@ pub fn attract_bodies(
 
         //println!("Radii: {:?}", (*r1 + *r2));
 
-        if distance_sq.sqrt() <= (*r1 + *r2) {
+        if distance_sq.sqrt() <= (*r1 + *r2 + 0.01) {
             let (new_velocity1, new_velocity2) = calculate_velocities_after_collision(
                 velocity1,
                 velocity2,
@@ -54,71 +55,9 @@ pub fn attract_bodies(
     }
 }
 
-pub fn calculate_kinetic_energy(mass: f32, velocity: Vec3) -> f32 {
-    0.5 * mass * velocity.dot(velocity)
-}
-
-pub fn calculate_momentum(mass: f32, velocity: Vec3) -> Vec3 {
-    velocity * mass
-}
-
-pub fn calculate_velocities_after_collision(
-    v_a: Vec3,
-    v_b: Vec3,
-    _m_a: f32,
-    _m_b: f32,
-    x_a: Vec3,
-    x_b: Vec3,
-) -> (Vec3, Vec3) {
-    let mut d = x_a - x_b;
-
-    d = d.normalize();
-
-    let relative_velocity = v_a - v_b;
-
-    let relative_velocity_dot = relative_velocity.dot(d);
-
-    d = d.mul(relative_velocity_dot);
-
-    (-d, d)
-}
-
-pub fn calculate_moment_of_inertia_tensor(mass: f32, radius: f32) -> Mat3 {
-    let moment_of_inertia = 2. / 5. * mass * radius * radius;
-
-    Mat3 {
-        x_axis: Vec3::new(moment_of_inertia, 0., 0.),
-        y_axis: Vec3::new(0., moment_of_inertia, 0.),
-        z_axis: Vec3::new(0., 0., moment_of_inertia),
-    }
-}
-
-pub fn calculate_rotational_matrix(orientation: Quat) -> Mat3 {
-    let q = orientation;
-    let q0 = q.w;
-    let q1 = q.x;
-    let q2 = q.y;
-    let q3 = q.z;
-
-    let r00: f32 = 2. * (q0 * q0 + q1 * q1) - 1.;
-    let r01: f32 = 2. * (q1 * q2 - q0 * q3);
-    let r02: f32 = 2. * (q1 * q3 + q0 * q2);
-
-    let r10: f32 = 2. * (q1 * q2 + q0 * q3);
-    let r11: f32 = 2. * (q0 * q0 + q2 * q2) - 1.;
-    let r12: f32 = 2. * (q2 * q3 - q0 * q1);
-
-    let r20: f32 = 2. * (q1 * q3 - q0 * q2);
-    let r21: f32 = 2. * (q2 * q3 + q0 * q1);
-    let r22: f32 = 2. * (q0 * q0 + q3 * q3) - 1.;
-
-    Mat3 {
-        x_axis: Vec3::new(r00, r01, r02),
-        y_axis: Vec3::new(r10, r11, r12),
-        z_axis: Vec3::new(r20, r21, r22),
-    }
-}
-
+/// Integrates the acceleration to get the velocity and then integrates the velocity to get the position.
+/// Currently this doesn't take into account any sort of angular velocity or angular momentum, although
+/// this is something I want to implement ASAP.
 pub fn integrate(
     mut query: Query<(
         &mut Acceleration,
