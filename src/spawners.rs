@@ -2,7 +2,8 @@ use bevy::prelude::*;
 use rand::thread_rng;
 use rand::Rng;
 
-use crate::body::*;
+use crate::physics::helpers::*;
+use crate::physics::types::*;
 
 pub const NUM_BODIES: usize = 125;
 
@@ -63,38 +64,4 @@ pub fn spawn_bodies(
                 });
             });
     }
-}
-
-pub fn spawn_black_hole(
-    mut commands: Commands,
-    mut meshes: ResMut<Assets<Mesh>>,
-    mut materials: ResMut<Assets<StandardMaterial>>,
-) {
-    let mesh = meshes.add(Mesh::from(shape::Icosphere {
-        radius: 1.0,
-        subdivisions: 3,
-    }));
-
-    let _bh_radius: f32 = 1.;
-
-    commands
-        .spawn_bundle(BodyBundle {
-            pbr: PbrBundle {
-                transform: Transform {
-                    translation: Vec3::ZERO,
-                    scale: Vec3::splat(2.0),
-                    ..default()
-                },
-                mesh: mesh.clone(),
-                material: materials.add(Color::rgb(0.0, 0.0, 0.0).into()),
-                ..default()
-            },
-            mass: Mass(500.),
-            radius: Radius(20.),
-            acceleration: Acceleration(Vec3::ZERO),
-            angular_momentum: AngularMomentum(Vec3::ZERO),
-            linear_momentum: LinearMomentum(Vec3::ZERO),
-            orientation: Orientation(Quat::IDENTITY),
-        })
-        .insert(BlackHole);
 }

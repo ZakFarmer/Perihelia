@@ -1,11 +1,9 @@
+use crate::physics::sim::*;
 use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, time::FixedTimestep};
 use bevy_flycam::{MovementSettings, PlayerPlugin};
-use physics::*;
 use spawners::*;
-use ui::{setup_ui, update_fps_label};
+use ui::debug::{setup_debug_ui, update_fps_label};
 
-pub mod body;
-pub mod collision;
 pub mod physics;
 pub mod spawners;
 pub mod ui;
@@ -36,9 +34,7 @@ fn main() {
             ..default()
         })
         .add_startup_system(spawn_bodies)
-        .add_startup_system(setup_ui)
-        //.add_startup_system(spawn_black_hole)
-        //.add_startup_system(spawn_star)
+        .add_startup_system(setup_debug_ui)
         .add_system(update_fps_label)
         .add_stage_after(
             CoreStage::Update,
@@ -48,11 +44,10 @@ fn main() {
                 .with_system(attract_bodies)
                 .with_system(integrate),
         )
-        //.add_system(look_at_center)
         .insert_resource(ClearColor(Color::hex("141414").unwrap()))
         .insert_resource(MovementSettings {
-            sensitivity: 0.00015, // default: 0.00012
-            speed: 12.0,          // default: 12.0
+            sensitivity: 0.00015,
+            speed: 12.0,
         })
         .run();
 }
