@@ -1,9 +1,11 @@
+use crate::constants::*;
 use crate::physics::sim::*;
 use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, time::FixedTimestep};
 use bevy_flycam::{MovementSettings, PlayerPlugin};
 use spawners::*;
 use ui::debug::{setup_debug_ui, update_fps_label};
 
+pub mod constants;
 pub mod physics;
 pub mod spawners;
 pub mod ui;
@@ -13,9 +15,6 @@ struct FixedUpdateStage;
 
 const DELTA_TIME: f64 = 0.01;
 
-const SCREEN_WIDTH: usize = 1920;
-const SCREEN_HEIGHT: usize = 1080;
-
 #[bevy_main]
 fn main() {
     App::new()
@@ -24,6 +23,7 @@ fn main() {
             width: SCREEN_WIDTH as f32,
             height: SCREEN_HEIGHT as f32,
             present_mode: bevy::window::PresentMode::Fifo,
+            mode: bevy::window::WindowMode::Windowed,
             ..default()
         })
         .add_plugins(DefaultPlugins)

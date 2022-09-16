@@ -6,9 +6,6 @@ use bevy::{
 use crate::spawners::NUM_BODIES;
 use crate::ui::types::*;
 
-const SCREEN_WIDTH: usize = 1920;
-const SCREEN_HEIGHT: usize = 1080;
-
 /// Sets up the debug UI
 pub fn setup_debug_ui(mut commands: Commands, asset_server: Res<AssetServer>) {
     setup_debug_labels(commands, asset_server);
