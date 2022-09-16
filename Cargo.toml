@@ -8,7 +8,10 @@ edition = "2021"
 [dependencies]
 bevy = "0.8.1"
 bevy_flycam = "*"
+bevy_mod_picking = "0.9"
 rand = "0.8.5"
+serde = "1.0.144"
+bevy_web_fullscreen = { git = "https://github.com/ostwilkens/bevy_web_fullscreen" }
 
 [dependencies.web-sys]
 version = "0.3.4"

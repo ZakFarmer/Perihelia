@@ -31,8 +31,8 @@ pub fn spawn_bodies(
             * rng.gen_range(0.2f32..1.0).powf(1. / 3.)
             * 15.;
 
-        commands
-            .spawn_bundle(BodyBundle {
+        commands.add(move |w: &mut World| {
+            w.spawn().insert_bundle(BodyBundle {
                 pbr: PbrBundle {
                     transform: Transform {
                         translation: position,
@@ -49,19 +49,8 @@ pub fn spawn_bodies(
                 angular_momentum: AngularMomentum(Vec3::ZERO),
                 linear_momentum: LinearMomentum(Vec3::ZERO),
                 orientation: Orientation(Quat::IDENTITY),
-            })
-            .with_children(|p| {
-                p.spawn_bundle(PointLightBundle {
-                    point_light: PointLight {
-                        color: Color::WHITE,
-                        intensity: 10.0,
-                        range: 10.0,
-                        radius: 1.,
-                        ..default()
-                    },
-                    ..default()
-                });
             });
+        });
     }
 }
 
