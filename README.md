@@ -2,7 +2,7 @@
 
 **3D Physics Simulation Game written in Rust with Bevy.**
 
-
+![Perihelia screenshot](https://perihelia.s3.eu-west-1.amazonaws.com/screenshot2.png)
 ## Building
 To build the project yourself, make sure your environment is setup with Rust and the Rust toolchain. [There are steps here](https://www.rust-lang.org/tools/install) if you don't have Rust installed yet.
 
