@@ -31,25 +31,23 @@ pub fn spawn_bodies(
             * rng.gen_range(0.2f32..1.0).powf(1. / 3.)
             * 15.;
 
-        commands.add(move |w: &mut World| {
-            w.spawn().insert_bundle(BodyBundle {
-                pbr: PbrBundle {
-                    transform: Transform {
-                        translation: position,
-                        scale: Vec3::splat(radius),
-                        ..default()
-                    },
-                    mesh: mesh.clone(),
-                    material: materials.add(Color::rgb(1.0, 1.0, 1.0).into()),
+        commands.spawn().insert_bundle(BodyBundle {
+            pbr: PbrBundle {
+                transform: Transform {
+                    translation: position,
+                    scale: Vec3::splat(radius),
                     ..default()
                 },
-                mass: Mass(mass),
-                radius: Radius(radius),
-                acceleration: Acceleration(Vec3::ZERO),
-                angular_momentum: AngularMomentum(Vec3::ZERO),
-                linear_momentum: LinearMomentum(Vec3::ZERO),
-                orientation: Orientation(Quat::IDENTITY),
-            });
+                mesh: mesh.clone(),
+                material: materials.add(Color::rgb(1.0, 1.0, 1.0).into()),
+                ..default()
+            },
+            mass: Mass(mass),
+            radius: Radius(radius),
+            acceleration: Acceleration(Vec3::ZERO),
+            angular_momentum: AngularMomentum(Vec3::ZERO),
+            linear_momentum: LinearMomentum(Vec3::ZERO),
+            orientation: Orientation(Quat::IDENTITY),
         });
     }
 }

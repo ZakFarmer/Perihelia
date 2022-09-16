@@ -50,7 +50,7 @@ fn main() {
         })
         .add_startup_system(spawn_bodies)
         .add_startup_system(setup_ui)
-        .add_startup_system(write_save.exclusive_system())
+        .add_system(write_save.exclusive_system().at_end())
         //.add_startup_system(spawn_black_hole)
         //.add_startup_system(spawn_star)
         .add_system(update_fps_label)

@@ -35,7 +35,8 @@ pub fn load_save(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 pub fn write_save(world: &mut World) {
     println!("{:?}", world);
-    let type_registry = world.get_resource::<TypeRegistryArc>().unwrap();
+    let type_registry = TypeRegistryArc::default();
+
     type_registry.write().register::<BodyBundle>();
     type_registry.write().register::<Mass>();
     type_registry.write().register::<Radius>();
