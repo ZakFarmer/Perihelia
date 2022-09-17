@@ -3,9 +3,8 @@ use bevy::{
     prelude::*,
 };
 
-use crate::spawners::NUM_BODIES;
-use crate::ui::constants::*;
 use crate::ui::types::*;
+use crate::{constants::NUM_BODIES, ui::constants::*};
 
 /// Sets up the debug UI
 pub fn setup_debug_ui(commands: Commands, asset_server: Res<AssetServer>) {

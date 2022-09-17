@@ -2,9 +2,8 @@ use bevy::prelude::*;
 use rand::thread_rng;
 use rand::Rng;
 
+use crate::constants::NUM_BODIES;
 use crate::physics::types::*;
-
-pub const NUM_BODIES: usize = 125;
 
 pub fn spawn_bodies(
     mut commands: Commands,
