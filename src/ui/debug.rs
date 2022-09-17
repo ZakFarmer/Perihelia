@@ -21,13 +21,13 @@ fn setup_debug_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
                     "FPS: ",
                     TextStyle {
                         font: asset_server.load(MAIN_FONT_PATH),
-                        font_size: 20.0,
+                        font_size: 12.0,
                         color: Color::WHITE,
                     },
                 ),
                 TextSection::from_style(TextStyle {
                     font: asset_server.load(MAIN_FONT_PATH),
-                    font_size: 20.0,
+                    font_size: 12.0,
                     color: Color::WHITE,
                 }),
             ])
@@ -51,7 +51,7 @@ fn setup_debug_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
                     "Count: ",
                     TextStyle {
                         font: asset_server.load(MAIN_FONT_PATH),
-                        font_size: 20.0,
+                        font_size: 12.0,
                         color: Color::WHITE,
                     },
                 ),
@@ -59,7 +59,7 @@ fn setup_debug_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
                     format!("{}", NUM_BODIES),
                     TextStyle {
                         font: asset_server.load(MAIN_FONT_PATH),
-                        font_size: 20.0,
+                        font_size: 12.0,
                         color: Color::WHITE,
                     },
                 ),
@@ -84,13 +84,13 @@ fn setup_debug_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
                     "Δt: ",
                     TextStyle {
                         font: asset_server.load(MAIN_FONT_PATH),
-                        font_size: 20.0,
+                        font_size: 12.0,
                         color: Color::WHITE,
                     },
                 ),
                 TextSection::from_style(TextStyle {
                     font: asset_server.load(MAIN_FONT_PATH),
-                    font_size: 20.0,
+                    font_size: 12.0,
                     color: Color::WHITE,
                 }),
             ])

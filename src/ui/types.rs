@@ -12,14 +12,6 @@ pub struct MenuLabel;
 #[derive(Component)]
 pub struct MenuButton;
 
-/// A component for Radius text within the menu
-#[derive(Component)]
-pub struct RadiusText;
-
-/// A component for Mass text within the menu
-#[derive(Component)]
-pub struct MassText;
-
 /// A component for the FPS debug text
 #[derive(Component)]
 pub struct FPSText;

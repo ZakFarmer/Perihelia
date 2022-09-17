@@ -3,12 +3,44 @@ name = "perihelia"
 version = "0.1.0"
 edition = "2021"
 
+[lib]
+crate-type = ["cdylib", "rlib"]
 # See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
 
 [dependencies]
-bevy = "0.8.1"
 bevy_flycam = "*"
 rand = "0.8.5"
+smallvec = "1.9.0"
+wasm-bindgen = "0.2.69"
+
+[dependencies.bevy]
+version = "0.8.1"
+default-features = false
+# These are the remaining default features other than `bevy_audio` and `vorbis`
+features = [
+  "render",
+  "animation",
+  "bevy_asset",
+  "bevy_scene",
+  "bevy_winit",
+  "bevy_gilrs",
+  "png",
+  "hdr",
+  "filesystem_watcher",
+  "x11"
+]
+
+[dependencies.bevy_kira_audio]
+version = "0.12"
+# `ogg` format support is enabled by default, disable if you don't want it
+default-features = false
+# enable the features you care about
+features = [
+  "wav",
+  "flac",
+  "mp3",
+  "ogg",
+]
 
 [dependencies.web-sys]
 version = "0.3.4"
