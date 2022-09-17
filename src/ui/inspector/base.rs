@@ -1,13 +1,13 @@
 use bevy::prelude::*;
 
-use crate::constants::*;
-use crate::ui::constants::*;
-use crate::ui::menu::materials::MenuMaterials;
-use crate::ui::types::*;
 
-use super::body::setup_body_labels;
 
-pub fn setup_inspector(mut commands: Commands, asset_server: Res<AssetServer>) {
+
+
+
+
+
+pub fn setup_inspector(_commands: Commands, _asset_server: Res<AssetServer>) {
     /*commands
     .spawn_bundle(ButtonBundle {
         style: Style {

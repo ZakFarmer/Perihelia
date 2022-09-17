@@ -2,11 +2,8 @@ use bevy::prelude::*;
 
 use crate::{
     constants::{SCREEN_HEIGHT, SCREEN_WIDTH},
-    physics::types::Mass,
-    physics::types::{PhysicsBody, Radius},
     ui::{
         constants::{LABEL_FONT_SIZE, MAIN_FONT_PATH},
-        types::*,
     },
 };
 
