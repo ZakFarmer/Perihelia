@@ -1,6 +1,6 @@
 use bevy::prelude::*;
 
-use crate::ui::constants::{LABEL_FONT_SIZE, MAIN_FONT_PATH, UI_LABEL_COLOUR};
+use crate::ui::constants::{LABEL_FONT_SIZE, MAIN_FONT_PATH};
 
 pub fn label(asset_server: &Res<AssetServer>, label: &str) -> TextBundle {
     TextBundle::from_sections([TextSection::new(

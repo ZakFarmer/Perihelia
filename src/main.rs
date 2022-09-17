@@ -1,6 +1,6 @@
 use crate::constants::*;
 use crate::physics::sim::*;
-use crate::ui::base::*;
+
 use audio::base::setup_audio;
 use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, time::FixedTimestep};
 use bevy_flycam::{MovementSettings, PlayerPlugin};
@@ -40,14 +40,14 @@ pub fn start() {
         ..default()
     })
     .add_plugins(DefaultPlugins)
-    .add_plugin(AudioPlugin)
+    //.add_plugin(AudioPlugin)
     .add_plugin(PlayerPlugin)
     .add_plugin(FrameTimeDiagnosticsPlugin::default())
     .insert_resource(AmbientLight {
         brightness: 0.03,
         ..default()
     })
-    .add_startup_system(setup_audio)
+    //.add_startup_system(setup_audio)
     .add_startup_system(spawn_bodies)
     .add_startup_system(setup_debug_ui)
     //.add_startup_system(setup_ui)
