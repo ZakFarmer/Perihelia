@@ -3,10 +3,6 @@ name = "perihelia"
 version = "0.1.0"
 edition = "2021"
 
-[lib]
-crate-type = ["cdylib", "rlib"]
-# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
-
 [dependencies]
 bevy_flycam = "*"
 rand = "0.8.5"
