@@ -31,25 +31,24 @@ pub fn spawn_bodies(
             * 15.;
 
         commands
-            .spawn_bundle(PhysicsBody {
-                body_bundle: BodyBundle {
-                    pbr: PbrBundle {
-                        transform: Transform {
-                            translation: position,
-                            scale: Vec3::splat(radius),
-                            ..default()
-                        },
-                        mesh: mesh.clone(),
-                        material: materials.add(Color::rgb(1.0, 1.0, 1.0).into()),
+            .spawn_bundle(BodyBundle {
+                pbr: PbrBundle {
+                    transform: Transform {
+                        translation: position,
+                        scale: Vec3::splat(radius),
                         ..default()
                     },
-                    mass: Mass(mass),
-                    radius: Radius(radius),
-                    acceleration: Acceleration(Vec3::ZERO),
-                    angular_momentum: AngularMomentum(Vec3::ZERO),
-                    linear_momentum: LinearMomentum(Vec3::ZERO),
-                    orientation: Orientation(Quat::IDENTITY),
+                    mesh: mesh.clone(),
+                    material: materials.add(Color::rgb(1.0, 1.0, 1.0).into()),
+                    ..default()
                 },
+                _b: PhysicsBody::default(),
+                mass: Mass(mass),
+                radius: Radius(radius),
+                acceleration: Acceleration(Vec3::ZERO),
+                angular_momentum: AngularMomentum(Vec3::ZERO),
+                linear_momentum: LinearMomentum(Vec3::ZERO),
+                orientation: Orientation(Quat::IDENTITY),
             })
             .with_children(|p| {
                 p.spawn_bundle(PointLightBundle {
