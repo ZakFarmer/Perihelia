@@ -4,10 +4,11 @@ use bevy::{
 };
 
 use crate::spawners::NUM_BODIES;
+use crate::ui::constants::*;
 use crate::ui::types::*;
 
 /// Sets up the debug UI
-pub fn setup_debug_ui(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn setup_debug_ui(commands: Commands, asset_server: Res<AssetServer>) {
     setup_debug_labels(commands, asset_server);
 }
 
@@ -19,13 +20,13 @@ fn setup_debug_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
                 TextSection::new(
                     "FPS: ",
                     TextStyle {
-                        font: asset_server.load("fonts/snap.otf"),
+                        font: asset_server.load(MAIN_FONT_PATH),
                         font_size: 20.0,
                         color: Color::WHITE,
                     },
                 ),
                 TextSection::from_style(TextStyle {
-                    font: asset_server.load("fonts/snap.otf"),
+                    font: asset_server.load(MAIN_FONT_PATH),
                     font_size: 20.0,
                     color: Color::WHITE,
                 }),
@@ -49,7 +50,7 @@ fn setup_debug_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
                 TextSection::new(
                     "Count: ",
                     TextStyle {
-                        font: asset_server.load("fonts/snap.otf"),
+                        font: asset_server.load(MAIN_FONT_PATH),
                         font_size: 20.0,
                         color: Color::WHITE,
                     },
@@ -57,7 +58,7 @@ fn setup_debug_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
                 TextSection::new(
                     format!("{}", NUM_BODIES),
                     TextStyle {
-                        font: asset_server.load("fonts/snap.otf"),
+                        font: asset_server.load(MAIN_FONT_PATH),
                         font_size: 20.0,
                         color: Color::WHITE,
                     },
@@ -75,8 +76,44 @@ fn setup_debug_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
             }),
         )
         .insert(CountText);
+
+    commands
+        .spawn_bundle(
+            TextBundle::from_sections([
+                TextSection::new(
+                    "Δt: ",
+                    TextStyle {
+                        font: asset_server.load(MAIN_FONT_PATH),
+                        font_size: 20.0,
+                        color: Color::WHITE,
+                    },
+                ),
+                TextSection::from_style(TextStyle {
+                    font: asset_server.load(MAIN_FONT_PATH),
+                    font_size: 20.0,
+                    color: Color::WHITE,
+                }),
+            ])
+            .with_style(Style {
+                align_self: AlignSelf::FlexEnd,
+                position_type: PositionType::Absolute,
+                position: UiRect {
+                    top: Val::Px(45.0),
+                    left: Val::Px(15.0),
+                    ..default()
+                },
+                ..default()
+            }),
+        )
+        .insert(DeltaTimeText);
 }
 
+/// Updates the delta time value with the current delta time
+pub fn update_dt_label(mut query: Query<&mut Text, With<DeltaTimeText>>, time: Res<Time>) {
+    for mut text in query.iter_mut() {
+        text.sections[1].value = format!("{:.2}", time.delta_seconds());
+    }
+}
 /// Updates the FPS label's value with the current FPS
 pub fn update_fps_label(diagnostics: Res<Diagnostics>, mut query: Query<&mut Text, With<FPSText>>) {
     for mut text in &mut query {

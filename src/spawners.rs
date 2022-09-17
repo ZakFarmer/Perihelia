@@ -2,7 +2,6 @@ use bevy::prelude::*;
 use rand::thread_rng;
 use rand::Rng;
 
-use crate::physics::helpers::*;
 use crate::physics::types::*;
 
 pub const NUM_BODIES: usize = 125;
@@ -33,23 +32,25 @@ pub fn spawn_bodies(
             * 15.;
 
         commands
-            .spawn_bundle(BodyBundle {
-                pbr: PbrBundle {
-                    transform: Transform {
-                        translation: position,
-                        scale: Vec3::splat(radius),
+            .spawn_bundle(PhysicsBody {
+                body_bundle: BodyBundle {
+                    pbr: PbrBundle {
+                        transform: Transform {
+                            translation: position,
+                            scale: Vec3::splat(radius),
+                            ..default()
+                        },
+                        mesh: mesh.clone(),
+                        material: materials.add(Color::rgb(1.0, 1.0, 1.0).into()),
                         ..default()
                     },
-                    mesh: mesh.clone(),
-                    material: materials.add(Color::rgb(1.0, 1.0, 1.0).into()),
-                    ..default()
+                    mass: Mass(mass),
+                    radius: Radius(radius),
+                    acceleration: Acceleration(Vec3::ZERO),
+                    angular_momentum: AngularMomentum(Vec3::ZERO),
+                    linear_momentum: LinearMomentum(Vec3::ZERO),
+                    orientation: Orientation(Quat::IDENTITY),
                 },
-                mass: Mass(mass),
-                radius: Radius(radius),
-                acceleration: Acceleration(Vec3::ZERO),
-                angular_momentum: AngularMomentum(Vec3::ZERO),
-                linear_momentum: LinearMomentum(Vec3::ZERO),
-                orientation: Orientation(Quat::IDENTITY),
             })
             .with_children(|p| {
                 p.spawn_bundle(PointLightBundle {

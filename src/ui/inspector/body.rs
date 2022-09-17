@@ -2,7 +2,7 @@ use bevy::prelude::*;
 
 use crate::ui::types::*;
 
-fn setup_body_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
+pub fn setup_body_labels(mut commands: Commands, asset_server: Res<AssetServer>) {
     commands
         .spawn_bundle(
             TextBundle::from_sections([

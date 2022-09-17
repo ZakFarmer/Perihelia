@@ -24,6 +24,13 @@ pub struct LinearMomentum(pub Vec3);
 #[derive(Component, Default)]
 pub struct Orientation(pub Quat);
 
+/// The body entity
+#[derive(Bundle, Component, Default)]
+pub struct PhysicsBody {
+    #[bundle]
+    pub body_bundle: BodyBundle,
+}
+
 /// A bundle for the body's physics components
 #[derive(Bundle, Default)]
 pub struct BodyBundle {

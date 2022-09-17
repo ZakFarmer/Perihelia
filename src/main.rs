@@ -2,8 +2,9 @@ use crate::constants::*;
 use crate::physics::sim::*;
 use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, time::FixedTimestep};
 use bevy_flycam::{MovementSettings, PlayerPlugin};
+use physics::constants::DELTA_TIME;
 use spawners::*;
-use ui::debug::{setup_debug_ui, update_fps_label};
+use ui::debug::*;
 
 pub mod constants;
 pub mod physics;
@@ -12,8 +13,6 @@ pub mod ui;
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, StageLabel)]
 struct FixedUpdateStage;
-
-const DELTA_TIME: f64 = 0.01;
 
 #[bevy_main]
 fn main() {
@@ -34,13 +33,14 @@ fn main() {
             ..default()
         })
         .add_startup_system(spawn_bodies)
-        .add_startup_system(setup_debug_ui)
-        .add_system(update_fps_label)
+        //.add_startup_system(setup_debug_ui)
+        //.add_system(update_dt_label)
+        //.add_system(update_fps_label)
         .add_stage_after(
             CoreStage::Update,
             FixedUpdateStage,
             SystemStage::parallel()
-                .with_run_criteria(FixedTimestep::step(DELTA_TIME))
+                .with_run_criteria(FixedTimestep::step(DELTA_TIME as f64))
                 .with_system(attract_bodies)
                 .with_system(integrate),
         )

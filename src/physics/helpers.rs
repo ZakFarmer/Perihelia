@@ -4,7 +4,7 @@ use bevy::prelude::*;
 
 /// Kronecker delta: 1 if i == j, 0 otherwise
 pub fn kronecker_delta(i: u8, j: u8) -> u8 {
-    return (i == j) as u8;
+    (i == j) as u8
 }
 
 /// Calculates the kinetic energy given a mass and vector of Velocity

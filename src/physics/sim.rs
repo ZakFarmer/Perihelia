@@ -1,4 +1,4 @@
-use std::ops::{Div, Mul};
+use std::ops::Div;
 
 use bevy::prelude::*;
 
@@ -81,8 +81,8 @@ pub fn integrate(
     {
         /*let I: Mat3 = calculate_moment_of_inertia_tensor(mass.0, radius.0);
         I.inverse();*/
-        linear_momentum.0 = linear_momentum.0 + (acceleration.0 * mass.0);
-        let new_pos = transform.translation + (linear_momentum.0 / mass.0) * DELTA_TIME;
+        linear_momentum.0 += acceleration.0 * mass.0;
+        let new_pos = transform.translation + (linear_momentum.0 / mass.0) * DELTA_TIME * TIMESCALE;
 
         acceleration.0 = Vec3::ZERO;
         transform.translation = new_pos;

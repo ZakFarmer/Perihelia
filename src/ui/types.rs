@@ -24,6 +24,9 @@ pub struct MassText;
 #[derive(Component)]
 pub struct FPSText;
 
+/// A component for the delta time debug text
+#[derive(Component)]
+pub struct DeltaTimeText;
 /// A component for the body count debug text
 #[derive(Component)]
 pub struct CountText;
