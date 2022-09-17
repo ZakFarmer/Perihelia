@@ -16,6 +16,8 @@ pub mod input;
 pub mod physics;
 pub mod spawners;
 pub mod ui;
+pub mod utils;
+pub mod world;
 
 #[derive(Debug, Hash, PartialEq, Eq, Clone, StageLabel)]
 struct FixedUpdateStage;

@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use serde::Serialize;
 
 /// A component for the body's mass (kg)
 #[derive(Component, Default)]
@@ -32,6 +33,7 @@ pub struct PhysicsBody;
 #[derive(Bundle, Default)]
 pub struct BodyBundle {
     #[bundle]
+    #[reflect(ignore)]
     pub pbr: PbrBundle,
     pub _b: PhysicsBody,
     pub mass: Mass,
