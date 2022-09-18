@@ -1,35 +1,35 @@
-use bevy::prelude::*;
+use bevy_egui::egui::{menu, Ui};
 
-use crate::constants::*;
-use crate::ui::constants::*;
-use crate::ui::inspector::base::setup_inspector;
-
-use super::label::label;
-use super::vstack::vstack;
-
-pub fn root() -> NodeBundle {
-    NodeBundle {
-        style: Style {
-            size: Size::new(
-                Val::Px(SCREEN_WIDTH as f32),
-                Val::Px((SCREEN_HEIGHT as f32) / 4.),
-            ),
-            justify_content: JustifyContent::Center,
-            align_items: AlignItems::Baseline,
-            ..default()
-        },
-        color: UI_BACKGROUND_COLOUR.into(),
-        ..default()
-    }
-}
-
-pub fn setup_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
-    commands.spawn_bundle(root()).with_children(|parent| {
-        parent.spawn_bundle(vstack()).with_children(|parent| {
-            parent.spawn_bundle(label(&asset_server, "Fuck yeah!"));
-            parent.spawn_bundle(label(&asset_server, "Fuck yeah! ^ 2"));
+pub fn show_main_menu(ui: &mut Ui) {
+    menu::bar(ui, |ui| {
+        ui.menu_button("File", |ui| {
+            if ui.button("Load").clicked() {}
+            if ui.button("Save").clicked() {}
+            if ui.button("Exit").clicked() {}
         });
-    });
 
-    setup_inspector(commands, asset_server);
+        ui.menu_button("About", |ui| {
+            if ui.button("Version").clicked() {}
+            if ui.button("Credits").clicked() {}
+            if ui.button("Open-Source Libraries").clicked() {}
+        });
+
+        ui.menu_button("Settings", |ui| {
+            if ui.button("Audio").clicked() {}
+            if ui.button("Appearance").clicked() {}
+            if ui.button("Debug").clicked() {}
+            if ui.button("Filesystem").clicked() {}
+            if ui.button("Network").clicked() {}
+            if ui.button("Physics").clicked() {}
+        });
+
+        ui.menu_button("Online", |ui| {
+            if ui.button("Profile").clicked() {}
+            if ui.button("Create Server").clicked() {}
+            if ui.button("Connect to IP").clicked() {}
+            if ui.button("Server List").clicked() {}
+        });
+
+        ui.menu_button("Quit", |ui| {});
+    });
 }

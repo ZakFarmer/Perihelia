@@ -1,11 +1,14 @@
 use bevy::{input::mouse::MouseMotion, prelude::*};
 
+use crate::state::base::SimState;
+
 use super::{
     base::Camera,
     helpers::{forward_walk_vector, movement_axis, strafe_vector},
 };
 
 pub fn camera_movement_system(
+    sim_state: Res<State<SimState>>,
     time: Res<Time>,
     keyboard_input: Res<Input<KeyCode>>,
     mut query: Query<(&mut Camera, &mut Transform)>,
@@ -58,10 +61,16 @@ pub fn camera_movement_system(
 }
 
 pub fn mouse_motion_system(
+    sim_state: Res<State<SimState>>,
     time: Res<Time>,
     mut mouse_motion_event_reader: EventReader<MouseMotion>,
     mut query: Query<(&mut Camera, &mut Transform)>,
 ) {
+    match sim_state.current() {
+        SimState::SimRunning => (),
+        _ => return,
+    };
+
     let mut delta: Vec2 = Vec2::ZERO;
     for event in mouse_motion_event_reader.iter() {
         delta += event.delta;

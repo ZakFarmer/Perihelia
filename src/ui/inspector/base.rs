@@ -1,5 +1,13 @@
 use bevy::prelude::*;
-use bevy_egui::{egui, EguiContext};
+use bevy_egui::{
+    egui::{self, Color32},
+    EguiContext,
+};
+
+use crate::{
+    constants::NUM_BODIES, physics::constants::TIMESCALE, state::base::SimState,
+    ui::menu::base::show_main_menu,
+};
 
 use super::types::OccupiedScreenSpace;
 
@@ -24,16 +32,31 @@ pub fn setup_inspector(_commands: Commands, _asset_server: Res<AssetServer>) {
 }
 
 pub fn inspector_panel_system(
+    sim_state: Res<State<SimState>>,
     mut egui_context: ResMut<EguiContext>,
     mut occupied_screen_space: ResMut<OccupiedScreenSpace>,
 ) {
-    occupied_screen_space.right = egui::SidePanel::right("right_panel")
+    /*occupied_screen_space.right = egui::SidePanel::right("right_panel")
+    .resizable(true)
+    .show(egui_context.ctx_mut(), |ui| {
+        ui.heading(format!("Particle Count: {}", NUM_BODIES));
+        ui.heading(format!("Timescale: {}", TIMESCALE));
+        ui.heading(format!("FPS: {}", 1.0));
+        ui.heading(format!("State: {:?}", sim_state.current()));
+
+        ui.allocate_rect(ui.available_rect_before_wrap(), egui::Sense::hover());
+    })
+    .response
+    .rect
+    .width();*/
+
+    occupied_screen_space.top = egui::TopBottomPanel::top("top_panel")
         .resizable(true)
         .show(egui_context.ctx_mut(), |ui| {
+            show_main_menu(ui);
             ui.allocate_rect(ui.available_rect_before_wrap(), egui::Sense::hover());
-            ui.label("world");
         })
         .response
         .rect
-        .width();
+        .height();
 }

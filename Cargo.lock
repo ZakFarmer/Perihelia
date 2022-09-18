@@ -384,9 +384,9 @@ dependencies = [
 
 [[package]]
 name = "bevy_egui"
-version = "0.16.0"
+version = "0.16.1"
 source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "e92efd442c1c99edb841c21b51248e0b472d9fc92ecd8124bc7bcfb5346760e9"
+checksum = "d365761fd6a5c227b1f88f38b560287334accb69cfe938443e27615464edc897"
 dependencies = [
  "arboard",
  "bevy",
@@ -2615,7 +2615,6 @@ dependencies = [
  "bevy_egui",
  "bevy_flycam",
  "bevy_kira_audio",
- "project-root",
  "rand",
  "smallvec",
  "wasm-bindgen",
@@ -2708,12 +2707,6 @@ name = "profiling"
 version = "1.0.6"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "2f61dcf0b917cd75d4521d7343d1ffff3d1583054133c9b5cbea3375c703c40d"
-
-[[package]]
-name = "project-root"
-version = "0.2.2"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-checksum = "8bccbff07d5ed689c4087d20d7307a52ab6141edeedf487c3876a55b86cf63df"
 
 [[package]]
 name = "quote"
