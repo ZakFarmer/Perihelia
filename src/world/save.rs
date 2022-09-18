@@ -1,14 +1,12 @@
 use std::{
-    error::Error,
     fs::{self, File},
     io::Write,
-    path::{Path, PathBuf},
     time::SystemTime,
 };
 
 use bevy::{prelude::*, reflect::TypeRegistryArc, tasks::IoTaskPool};
 
-use crate::body::{Acceleration, AngularMomentum, BodyBundle, LinearMomentum, Mass, Radius};
+use crate::physics::types::*;
 
 const SAVES_FILE_PATH: &str = "saves";
 const SAVE_FILENAME: &str = "og-save.ron";
@@ -37,7 +35,7 @@ pub fn write_save(world: &mut World) {
     println!("{:?}", world);
     let type_registry = TypeRegistryArc::default();
 
-    type_registry.write().register::<BodyBundle>();
+    type_registry.write().register::<PhysicsBody>();
     type_registry.write().register::<Mass>();
     type_registry.write().register::<Radius>();
     type_registry.write().register::<Acceleration>();
@@ -48,7 +46,7 @@ pub fn write_save(world: &mut World) {
 
     let scene = DynamicScene::from_world(world, &type_registry);
 
-    let scene = drop_empty(scene);
+    //let scene = drop_empty(scene);
 
     let serialized_scene = scene.serialize_ron(&type_registry).unwrap();
 

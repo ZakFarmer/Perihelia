@@ -5,13 +5,27 @@ use audio::base::setup_audio;
 use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, time::FixedTimestep};
 use bevy_flycam::{MovementSettings, PlayerPlugin};
 use bevy_kira_audio::AudioPlugin;
-use physics::constants::DELTA_TIME;
+use camera::{
+    base::setup_camera,
+    systems::{camera_movement_system, mouse_motion_system},
+};
+use graphics::{
+    cubemap::{asset_loaded, CubemapMaterial},
+    skybox::setup_skybox,
+};
+use physics::{
+    constants::DELTA_TIME,
+    types::{Acceleration, BodyBundle, LinearMomentum, PhysicsBody},
+};
 use spawners::*;
-use ui::debug::*;
+use ui::{base::setup_ui, debug::*};
 use wasm_bindgen::prelude::*;
+use world::save::write_save;
 
 pub mod audio;
+pub mod camera;
 pub mod constants;
+pub mod graphics;
 pub mod input;
 pub mod physics;
 pub mod spawners;
@@ -41,18 +55,26 @@ pub fn start() {
         mode: bevy::window::WindowMode::BorderlessFullscreen,
         ..default()
     })
+    .init_resource::<PhysicsBody>()
+    .init_resource::<BodyBundle>()
+    .init_resource::<Acceleration>()
+    .init_resource::<LinearMomentum>()
     .add_plugins(DefaultPlugins)
-    //.add_plugin(AudioPlugin)
-    .add_plugin(PlayerPlugin)
     .add_plugin(FrameTimeDiagnosticsPlugin::default())
     .insert_resource(AmbientLight {
         brightness: 0.03,
         ..default()
     })
     //.add_startup_system(setup_audio)
+    .add_startup_system(setup_camera)
     .add_startup_system(spawn_bodies)
     .add_startup_system(setup_debug_ui)
-    //.add_startup_system(setup_ui)
+    //.add_startup_system(write_save.exclusive_system().at_end())
+    .add_startup_system(setup_ui)
+    .add_system(camera_movement_system)
+    .add_system(mouse_motion_system)
+    //.add_startup_system(setup_skybox)
+    //.add_system(asset_loaded)
     .add_system(update_dt_label)
     .add_system(update_fps_label)
     .add_stage_after(

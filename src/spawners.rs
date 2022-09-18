@@ -17,7 +17,7 @@ pub fn spawn_bodies(
 
     let mut rng = thread_rng();
 
-    for _ in 0..NUM_BODIES {
+    for i in 0..NUM_BODIES {
         let radius: f32 = rng.gen_range(0.05..0.1);
         let mass: f32 = 1000. * 10.;
 
@@ -31,7 +31,9 @@ pub fn spawn_bodies(
             * 15.;
 
         commands
-            .spawn_bundle(BodyBundle {
+            .spawn()
+            .insert(PhysicsBody)
+            .insert_bundle(BodyBundle {
                 pbr: PbrBundle {
                     transform: Transform {
                         translation: position,
@@ -42,7 +44,6 @@ pub fn spawn_bodies(
                     material: materials.add(Color::rgb(1.0, 1.0, 1.0).into()),
                     ..default()
                 },
-                _b: PhysicsBody::default(),
                 mass: Mass(mass),
                 radius: Radius(radius),
                 acceleration: Acceleration(Vec3::ZERO),
@@ -50,6 +51,8 @@ pub fn spawn_bodies(
                 linear_momentum: LinearMomentum(Vec3::ZERO),
                 orientation: Orientation(Quat::IDENTITY),
             })
+            .insert(Mass(mass))
+            .insert(LinearMomentum(Vec3::ZERO))
             .with_children(|p| {
                 p.spawn_bundle(PointLightBundle {
                     point_light: PointLight {
