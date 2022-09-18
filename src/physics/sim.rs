@@ -5,6 +5,7 @@ use bevy::prelude::*;
 use crate::physics::constants::*;
 use crate::physics::helpers::*;
 use crate::physics::types::*;
+use crate::state::base::SimState;
 
 /// Attracts the bodies towards eachother using Newton's law of universal gravitation
 ///
@@ -59,6 +60,7 @@ pub fn attract_bodies(
 /// Currently this doesn't take into account any sort of angular velocity or angular momentum, although
 /// this is something I want to implement ASAP.
 pub fn integrate(
+    mut sim_state: ResMut<State<SimState>>,
     mut query: Query<(
         &mut Acceleration,
         &mut Transform,
@@ -79,8 +81,13 @@ pub fn integrate(
         mut linear_momentum,
     ) in &mut query
     {
-        /*let I: Mat3 = calculate_moment_of_inertia_tensor(mass.0, radius.0);
-        I.inverse();*/
+        match sim_state.current() {
+            SimState::SimRunning => (),
+            _ => {
+                return;
+            }
+        }
+
         linear_momentum.0 += acceleration.0 * mass.0;
         let new_pos = transform.translation + (linear_momentum.0 / mass.0) * DELTA_TIME * TIMESCALE;
 

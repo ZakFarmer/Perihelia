@@ -18,7 +18,7 @@ pub fn spawn_bodies(
     let mut rng = thread_rng();
 
     for _i in 0..NUM_BODIES {
-        let radius: f32 = rng.gen_range(0.05..0.1);
+        let radius: f32 = rng.gen_range(0.05..0.08);
         let mass: f32 = 1000. * 10.;
 
         let position = Vec3::new(
@@ -59,7 +59,7 @@ pub fn spawn_bodies(
                         color: Color::WHITE,
                         intensity: 10.0,
                         range: 10.0,
-                        radius: 1.,
+                        radius: radius,
                         ..default()
                     },
                     ..default()

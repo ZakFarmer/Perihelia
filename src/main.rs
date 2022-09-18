@@ -1,23 +1,28 @@
 use crate::constants::*;
 use crate::physics::sim::*;
 
-
 use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, time::FixedTimestep};
-use bevy_flycam::{MovementSettings};
+use bevy_egui::EguiPlugin;
+use bevy_flycam::MovementSettings;
 
 use camera::{
     base::setup_camera,
     systems::{camera_movement_system, mouse_motion_system},
 };
 
+use input::base::esc_to_menu;
 use physics::{
     constants::DELTA_TIME,
     types::{Acceleration, BodyBundle, LinearMomentum, PhysicsBody},
 };
 use spawners::*;
-use ui::{base::setup_ui, debug::*};
+use state::base::SimState;
+use ui::{
+    base::setup_ui,
+    debug::*,
+    inspector::{base::inspector_panel_system, types::OccupiedScreenSpace},
+};
 use wasm_bindgen::prelude::*;
-
 
 pub mod audio;
 pub mod camera;
@@ -26,6 +31,7 @@ pub mod graphics;
 pub mod input;
 pub mod physics;
 pub mod spawners;
+pub mod state;
 pub mod ui;
 pub mod utils;
 pub mod world;
@@ -52,22 +58,27 @@ pub fn start() {
         mode: bevy::window::WindowMode::BorderlessFullscreen,
         ..default()
     })
+    .init_resource::<OccupiedScreenSpace>()
     .init_resource::<PhysicsBody>()
     .init_resource::<BodyBundle>()
     .init_resource::<Acceleration>()
     .init_resource::<LinearMomentum>()
     .add_plugins(DefaultPlugins)
+    .add_plugin(EguiPlugin)
     .add_plugin(FrameTimeDiagnosticsPlugin::default())
+    .add_state(SimState::InMenu)
     .insert_resource(AmbientLight {
-        brightness: 0.03,
+        brightness: 0.1,
         ..default()
     })
     //.add_startup_system(setup_audio)
+    .add_system(inspector_panel_system)
     .add_startup_system(setup_camera)
     .add_startup_system(spawn_bodies)
     .add_startup_system(setup_debug_ui)
     //.add_startup_system(write_save.exclusive_system().at_end())
-    .add_startup_system(setup_ui)
+    .add_system(esc_to_menu)
+    .add_system(setup_ui)
     .add_system(camera_movement_system)
     .add_system(mouse_motion_system)
     //.add_startup_system(setup_skybox)

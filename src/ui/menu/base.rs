@@ -4,9 +4,8 @@ use crate::constants::*;
 use crate::ui::constants::*;
 use crate::ui::inspector::base::setup_inspector;
 
-
-
-
+use super::label::label;
+use super::vstack::vstack;
 
 pub fn root() -> NodeBundle {
     NodeBundle {
@@ -24,13 +23,13 @@ pub fn root() -> NodeBundle {
     }
 }
 
-pub fn setup_menu(commands: Commands, asset_server: Res<AssetServer>) {
-    /*commands.spawn_bundle(root()).with_children(|parent| {
+pub fn setup_menu(mut commands: Commands, asset_server: Res<AssetServer>) {
+    commands.spawn_bundle(root()).with_children(|parent| {
         parent.spawn_bundle(vstack()).with_children(|parent| {
             parent.spawn_bundle(label(&asset_server, "Fuck yeah!"));
             parent.spawn_bundle(label(&asset_server, "Fuck yeah! ^ 2"));
         });
-    });*/
+    });
 
     setup_inspector(commands, asset_server);
 }

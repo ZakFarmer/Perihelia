@@ -1,11 +1,7 @@
 use bevy::prelude::*;
+use bevy_egui::{egui, EguiContext};
 
-
-
-
-
-
-
+use super::types::OccupiedScreenSpace;
 
 pub fn setup_inspector(_commands: Commands, _asset_server: Res<AssetServer>) {
     /*commands
@@ -25,4 +21,19 @@ pub fn setup_inspector(_commands: Commands, _asset_server: Res<AssetServer>) {
     .insert(MenuRectangle);*/
 
     //setup_body_labels(commands, asset_server);
+}
+
+pub fn inspector_panel_system(
+    mut egui_context: ResMut<EguiContext>,
+    mut occupied_screen_space: ResMut<OccupiedScreenSpace>,
+) {
+    occupied_screen_space.right = egui::SidePanel::right("right_panel")
+        .resizable(true)
+        .show(egui_context.ctx_mut(), |ui| {
+            ui.allocate_rect(ui.available_rect_before_wrap(), egui::Sense::hover());
+            ui.label("world");
+        })
+        .response
+        .rect
+        .width();
 }
