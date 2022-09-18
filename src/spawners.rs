@@ -17,7 +17,7 @@ pub fn spawn_bodies(
 
     let mut rng = thread_rng();
 
-    for i in 0..NUM_BODIES {
+    for _i in 0..NUM_BODIES {
         let radius: f32 = rng.gen_range(0.05..0.1);
         let mass: f32 = 1000. * 10.;
 

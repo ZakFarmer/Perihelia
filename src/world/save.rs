@@ -1,5 +1,5 @@
 use std::{
-    fs::{self, File},
+    fs::{File},
     io::Write,
     time::SystemTime,
 };
@@ -15,7 +15,7 @@ fn drop_empty(scene: DynamicScene) -> DynamicScene {
     let new_entities = scene
         .entities
         .into_iter()
-        .filter(|entity| entity.components.len() > 0);
+        .filter(|entity| !entity.components.is_empty());
 
     DynamicScene {
         entities: new_entities.collect(),

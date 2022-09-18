@@ -55,7 +55,7 @@ impl Default for Camera {
 
 pub fn setup_camera(mut commands: Commands) {
     let translation = Vec3::new(-2.0, 2.5, 5.0);
-    let radius = translation.length();
+    let _radius = translation.length();
 
     commands
         .spawn_bundle(Camera3dBundle {

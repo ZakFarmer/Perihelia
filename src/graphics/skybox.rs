@@ -1,5 +1,5 @@
 use bevy::prelude::*;
-use bevy::render::texture::CompressedImageFormats;
+
 
 use super::constants::SKYBOX_CUBEMAP;
 use super::cubemap::Cubemap;
