@@ -10,30 +10,23 @@ pub fn cursor_grab_system(
 ) {
     let window = windows.get_primary_mut().unwrap();
 
-    match sim_state.current() {
-        SimState::InMenu => {
-            if btn.just_pressed(MouseButton::Left) {
+    if key.just_pressed(KeyCode::Escape) {
+        match sim_state.current() {
+            SimState::SimRunning => {
+                window.set_cursor_lock_mode(false);
+                println!("Cursor visibility setting to true...");
+                window.set_cursor_visibility(true);
+
+                sim_state.set(SimState::InMenu).unwrap();
+            }
+            SimState::InMenu => {
                 window.set_cursor_lock_mode(true);
+                println!("Cursor visibility setting to false...");
                 window.set_cursor_visibility(false);
 
                 sim_state.set(SimState::SimRunning).unwrap();
             }
+            _ => (),
         }
-        _ => {
-            if key.just_pressed(KeyCode::Escape) {
-                window.set_cursor_lock_mode(false);
-                window.set_cursor_visibility(true);
-            }
-        }
-    }
-
-    if btn.just_pressed(MouseButton::Left) {
-        window.set_cursor_lock_mode(true);
-        window.set_cursor_visibility(false);
-    }
-
-    if key.just_pressed(KeyCode::Escape) {
-        window.set_cursor_lock_mode(false);
-        window.set_cursor_visibility(true);
     }
 }

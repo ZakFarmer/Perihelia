@@ -2,9 +2,10 @@ use crate::constants::*;
 use crate::physics::sim::*;
 
 use bevy::{diagnostic::FrameTimeDiagnosticsPlugin, prelude::*, time::FixedTimestep};
-use bevy_egui::EguiPlugin;
+use bevy_egui::{egui::plot::Line, EguiPlugin};
 use bevy_flycam::MovementSettings;
 
+use bevy_inspector_egui::{InspectorPlugin, RegisterInspectable, WorldInspectorPlugin};
 use camera::{
     base::setup_camera,
     constants::{CAMERA_LOOK_SENSITIVITY, CAMERA_MOVE_SPEED},
@@ -14,14 +15,16 @@ use camera::{
 use input::{base::esc_to_menu, cursor_grab::cursor_grab_system};
 use physics::{
     constants::DELTA_TIME,
-    types::{Acceleration, BodyBundle, LinearMomentum, PhysicsBody},
+    types::{Acceleration, AngularMomentum, BodyBundle, LinearMomentum, Mass, PhysicsBody, Radius},
 };
 use spawners::*;
-use state::base::SimState;
+use state::base::{setup_state, SimState};
+use steamworks::{AppId, Client, PersonaStateChange};
 use ui::{
     base::{configure_visuals, show_ui},
     debug::*,
     inspector::{base::inspector_panel_system, types::OccupiedScreenSpace},
+    menu::{base::show_dialog_menu, state::MenuState},
 };
 use wasm_bindgen::prelude::*;
 
@@ -66,8 +69,15 @@ pub fn start() {
     .init_resource::<LinearMomentum>()
     .add_plugins(DefaultPlugins)
     .add_plugin(EguiPlugin)
+    .add_plugin(WorldInspectorPlugin::new())
     .add_plugin(FrameTimeDiagnosticsPlugin::default())
+    .add_state(MenuState::None)
     .add_state(SimState::SimRunning)
+    .register_inspectable::<Acceleration>()
+    .register_inspectable::<AngularMomentum>()
+    .register_inspectable::<LinearMomentum>()
+    .register_inspectable::<Mass>()
+    .register_inspectable::<Radius>()
     .insert_resource(AmbientLight {
         brightness: 0.5,
         ..default()
@@ -75,13 +85,15 @@ pub fn start() {
     .insert_resource(Msaa { samples: 4 })
     //.add_startup_system(setup_audio)
     .add_system(inspector_panel_system)
+    .add_startup_system(setup_state)
     .add_startup_system(configure_visuals)
     .add_startup_system(setup_camera)
     .add_startup_system(spawn_bodies)
     //.add_startup_system(setup_debug_ui)
     //.add_startup_system(write_save.exclusive_system().at_end())
-    .add_system(cursor_grab_system)
+    //.add_system(cursor_grab_system)
     .add_system(esc_to_menu)
+    .add_system(show_dialog_menu)
     .add_system(show_ui)
     .add_system(camera_movement_system)
     .add_system(mouse_motion_system)

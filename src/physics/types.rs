@@ -1,27 +1,28 @@
 use bevy::prelude::*;
+use bevy_inspector_egui::Inspectable;
 
 /// A component for the body's mass (kg)
-#[derive(Component, Default, Reflect)]
+#[derive(Component, Default, Reflect, Inspectable)]
 pub struct Mass(pub f32);
 
 /// A component for the body's radius (m)
-#[derive(Component, Default, Reflect)]
+#[derive(Component, Default, Reflect, Inspectable)]
 pub struct Radius(pub f32);
 
 /// A component for the body's acceleration (m/s^2)
-#[derive(Component, Default, Reflect)]
+#[derive(Component, Default, Reflect, Inspectable)]
 pub struct Acceleration(pub Vec3);
 
 /// A component for the body's angular momentum (kg m^2/s)
-#[derive(Component, Default, Reflect)]
+#[derive(Component, Default, Reflect, Inspectable)]
 pub struct AngularMomentum(pub Vec3);
 
 /// A component for the body's linear momentum (kg m/s)
-#[derive(Component, Default, Reflect)]
+#[derive(Component, Default, Reflect, Inspectable)]
 pub struct LinearMomentum(pub Vec3);
 
 /// A component for the body's orientation (quaternion)
-#[derive(Component, Default, Reflect)]
+#[derive(Component, Default, Reflect, Inspectable)]
 pub struct Orientation(pub Quat);
 
 /// The body entity

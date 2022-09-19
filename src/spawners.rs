@@ -18,7 +18,7 @@ pub fn spawn_bodies(
     let mut rng = thread_rng();
 
     for _i in 0..NUM_BODIES {
-        let radius: f32 = rng.gen_range(0.05..0.08);
+        let radius: f32 = rng.gen_range(0.1..0.3);
         let mass: f32 = 1000. * 10.;
 
         let position = Vec3::new(
@@ -32,7 +32,6 @@ pub fn spawn_bodies(
 
         commands
             .spawn()
-            .insert(PhysicsBody)
             .insert_bundle(BodyBundle {
                 pbr: PbrBundle {
                     transform: Transform {
@@ -51,8 +50,7 @@ pub fn spawn_bodies(
                 linear_momentum: LinearMomentum(Vec3::ZERO),
                 orientation: Orientation(Quat::IDENTITY),
             })
-            .insert(Mass(mass))
-            .insert(LinearMomentum(Vec3::ZERO))
+            .insert(PhysicsBody)
             .with_children(|p| {
                 p.spawn_bundle(PointLightBundle {
                     point_light: PointLight {

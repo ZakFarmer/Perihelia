@@ -1,9 +1,19 @@
-use bevy_egui::egui::{menu, Ui};
+use bevy_egui::{
+    egui::{menu, Ui},
+    EguiContext,
+};
 
-pub fn show_main_menu(ui: &mut Ui) {
+use bevy::prelude::*;
+
+use super::{file::load::show_load_menu, state::MenuState};
+
+pub fn show_main_menu(ui: &mut Ui, mut menu_state: ResMut<State<MenuState>>) {
     menu::bar(ui, |ui| {
         ui.menu_button("File", |ui| {
-            if ui.button("Load").clicked() {}
+            if ui.button("Load").clicked() {
+                menu_state.set(MenuState::FileLoad).unwrap();
+            }
+
             if ui.button("Save").clicked() {}
             if ui.button("Exit").clicked() {}
         });
@@ -32,4 +42,13 @@ pub fn show_main_menu(ui: &mut Ui) {
 
         ui.menu_button("Quit", |ui| {});
     });
+}
+
+pub fn show_dialog_menu(egui_context: ResMut<EguiContext>, menu_state: Res<State<MenuState>>) {
+    match menu_state.current() {
+        MenuState::FileLoad => {
+            show_load_menu(egui_context);
+        }
+        _ => (),
+    }
 }
