@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_mod_picking::PickingCameraBundle;
 
 #[derive(Component)]
 pub struct Camera {
@@ -62,5 +63,6 @@ pub fn setup_camera(mut commands: Commands) {
             transform: Transform::from_translation(translation).looking_at(Vec3::ZERO, Vec3::Y),
             ..Default::default()
         })
+        .insert_bundle(PickingCameraBundle::default())
         .insert(Camera::default());
 }

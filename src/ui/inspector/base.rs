@@ -7,7 +7,7 @@ use bevy_egui::{
 use crate::{
     constants::NUM_BODIES,
     physics::constants::TIMESCALE,
-    state::base::SimState,
+    state::types::{SimSettings, SimState},
     ui::menu::{base::show_main_menu, state::MenuState},
 };
 
@@ -34,7 +34,9 @@ pub fn setup_inspector(_commands: Commands, _asset_server: Res<AssetServer>) {
 }
 
 pub fn inspector_panel_system(
+    sim_settings: Res<SimSettings>,
     sim_state: Res<State<SimState>>,
+    time: Res<Time>,
     mut menu_state: ResMut<State<MenuState>>,
     mut egui_context: ResMut<EguiContext>,
     mut occupied_screen_space: ResMut<OccupiedScreenSpace>,
@@ -43,8 +45,11 @@ pub fn inspector_panel_system(
         .resizable(true)
         .show(egui_context.ctx_mut(), |ui| {
             ui.heading(format!("Particle Count: {}", NUM_BODIES));
-            ui.heading(format!("Timescale: {}", TIMESCALE));
-            ui.heading(format!("FPS: {}", 1.0));
+            ui.heading(format!("Timescale: {}", sim_settings.timescale));
+            ui.heading(format!(
+                "FPS: {}",
+                (1000.0 / time.delta().as_millis() as f64).round()
+            ));
             ui.heading(format!("State: {:?}", sim_state.current()));
 
             ui.allocate_rect(ui.available_rect_before_wrap(), egui::Sense::hover());

@@ -6,20 +6,26 @@ use bevy_egui::{egui::plot::Line, EguiPlugin};
 use bevy_flycam::MovementSettings;
 
 use bevy_inspector_egui::{InspectorPlugin, RegisterInspectable, WorldInspectorPlugin};
+use bevy_mod_picking::DefaultPickingPlugins;
 use camera::{
     base::setup_camera,
     constants::{CAMERA_LOOK_SENSITIVITY, CAMERA_MOVE_SPEED},
     systems::{camera_movement_system, mouse_motion_system},
 };
 
-use input::{base::esc_to_menu, cursor_grab::cursor_grab_system};
+use input::{
+    base::esc_to_menu, cursor_grab::cursor_grab_system, timescale::change_timescale_system,
+};
 use physics::{
-    constants::DELTA_TIME,
+    constants::{DELTA_TIME, TIMESCALE},
     types::{Acceleration, AngularMomentum, BodyBundle, LinearMomentum, Mass, PhysicsBody, Radius},
 };
-use spawners::*;
-use state::base::{setup_state, SimState};
-use steamworks::{AppId, Client, PersonaStateChange};
+use spawners::{base::spawn_bodies, *};
+use state::{
+    base::setup_state,
+    types::{SimSettings, SimState},
+};
+
 use ui::{
     base::{configure_visuals, show_ui},
     debug::*,
@@ -27,6 +33,7 @@ use ui::{
     menu::{base::show_dialog_menu, state::MenuState},
 };
 use wasm_bindgen::prelude::*;
+use world::save::write_save;
 
 pub mod audio;
 pub mod camera;
@@ -63,11 +70,13 @@ pub fn start() {
         ..default()
     })
     .init_resource::<OccupiedScreenSpace>()
+    .init_resource::<BodyBundle>()
     .init_resource::<PhysicsBody>()
     .init_resource::<BodyBundle>()
     .init_resource::<Acceleration>()
     .init_resource::<LinearMomentum>()
     .add_plugins(DefaultPlugins)
+    .add_plugins(DefaultPickingPlugins)
     .add_plugin(EguiPlugin)
     .add_plugin(WorldInspectorPlugin::new())
     .add_plugin(FrameTimeDiagnosticsPlugin::default())
@@ -79,7 +88,7 @@ pub fn start() {
     .register_inspectable::<Mass>()
     .register_inspectable::<Radius>()
     .insert_resource(AmbientLight {
-        brightness: 0.5,
+        brightness: 1.0,
         ..default()
     })
     .insert_resource(Msaa { samples: 4 })
@@ -90,12 +99,13 @@ pub fn start() {
     .add_startup_system(setup_camera)
     .add_startup_system(spawn_bodies)
     //.add_startup_system(setup_debug_ui)
-    //.add_startup_system(write_save.exclusive_system().at_end())
+    .add_startup_system(write_save.exclusive_system())
     //.add_system(cursor_grab_system)
     .add_system(esc_to_menu)
     .add_system(show_dialog_menu)
     .add_system(show_ui)
     .add_system(camera_movement_system)
+    .add_system(change_timescale_system)
     .add_system(mouse_motion_system)
     .add_system(update_dt_label)
     .add_system(update_fps_label)
@@ -108,6 +118,9 @@ pub fn start() {
             .with_system(integrate),
     )
     .insert_resource(ClearColor(Color::hex("141414").unwrap()))
+    .insert_resource(SimSettings {
+        timescale: TIMESCALE,
+    })
     .insert_resource(MovementSettings {
         sensitivity: CAMERA_LOOK_SENSITIVITY,
         speed: CAMERA_MOVE_SPEED,

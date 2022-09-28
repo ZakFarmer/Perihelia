@@ -11,9 +11,12 @@ edition = "2021"
 bevy_egui = "0.16.1"
 bevy-inspector-egui = "0.12.1"
 bevy_flycam = "*"
+bevy_mod_picking = "0.9.0"
+funutd = "0.6.0"
+png = "0.17.6"
 rand = "0.8.5"
+rfd = "0.10"
 smallvec = "1.9.0"
-steamworks = "0.9.0"
 wasm-bindgen = "0.2.69"
 
 [dependencies.bevy]
@@ -30,7 +33,8 @@ features = [
   "png",
   "hdr",
   "filesystem_watcher",
-  "x11"
+  "x11",
+  "jpeg",
 ]
 
 [dependencies.bevy_kira_audio]

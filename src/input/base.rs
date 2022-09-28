@@ -1,6 +1,6 @@
-use crate::state::base::SimState;
-
 use bevy::prelude::*;
+
+use crate::state::types::SimState;
 
 pub fn esc_to_menu(
     mut keys: ResMut<Input<KeyCode>>,

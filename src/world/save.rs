@@ -1,8 +1,4 @@
-use std::{
-    fs::{File},
-    io::Write,
-    time::SystemTime,
-};
+use std::{borrow::Cow, fs::File, io::Write, time::SystemTime};
 
 use bevy::{prelude::*, reflect::TypeRegistryArc, tasks::IoTaskPool};
 
@@ -33,8 +29,9 @@ pub fn load_save(mut commands: Commands, asset_server: Res<AssetServer>) {
 
 pub fn write_save(world: &mut World) {
     println!("{:?}", world);
-    let type_registry = TypeRegistryArc::default();
+    let type_registry = world.get_resource::<TypeRegistryArc>().unwrap();
 
+    type_registry.write().register::<Cow<'static, str>>();
     type_registry.write().register::<PhysicsBody>();
     type_registry.write().register::<Mass>();
     type_registry.write().register::<Radius>();

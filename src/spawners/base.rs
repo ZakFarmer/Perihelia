@@ -1,4 +1,5 @@
 use bevy::prelude::*;
+use bevy_mod_picking::PickableBundle;
 use rand::thread_rng;
 use rand::Rng;
 
@@ -9,6 +10,7 @@ pub fn spawn_bodies(
     mut commands: Commands,
     mut meshes: ResMut<Assets<Mesh>>,
     mut materials: ResMut<Assets<StandardMaterial>>,
+    asset_server: Res<AssetServer>,
 ) {
     let mesh = meshes.add(Mesh::from(shape::Icosphere {
         radius: 1.0,
@@ -18,8 +20,20 @@ pub fn spawn_bodies(
     let mut rng = thread_rng();
 
     for _i in 0..NUM_BODIES {
-        let radius: f32 = rng.gen_range(0.1..0.3);
+        let radius: f32 = rng.gen_range(0.5..1.0);
         let mass: f32 = 1000. * 10.;
+
+        let material = materials.add(StandardMaterial {
+            base_color_texture: asset_server
+                .load("textures/planets/earth/surface_map.jpeg")
+                .into(),
+            metallic: 0.0,
+            normal_map_texture: asset_server
+                .load("textures/planets/earth/normal_map.jpeg")
+                .into(),
+            unlit: false,
+            ..Default::default()
+        });
 
         let position = Vec3::new(
             rng.gen_range(-1.0..1.0),
@@ -32,6 +46,7 @@ pub fn spawn_bodies(
 
         commands
             .spawn()
+            .insert(Name::new("Body"))
             .insert_bundle(BodyBundle {
                 pbr: PbrBundle {
                     transform: Transform {
@@ -40,7 +55,7 @@ pub fn spawn_bodies(
                         ..default()
                     },
                     mesh: mesh.clone(),
-                    material: materials.add(Color::rgb(1.0, 1.0, 1.0).into()),
+                    material: material,
                     ..default()
                 },
                 mass: Mass(mass),
@@ -50,18 +65,6 @@ pub fn spawn_bodies(
                 linear_momentum: LinearMomentum(Vec3::ZERO),
                 orientation: Orientation(Quat::IDENTITY),
             })
-            .insert(PhysicsBody)
-            .with_children(|p| {
-                p.spawn_bundle(PointLightBundle {
-                    point_light: PointLight {
-                        color: Color::WHITE,
-                        intensity: 10.0,
-                        range: 10.0,
-                        radius: radius,
-                        ..default()
-                    },
-                    ..default()
-                });
-            });
+            .insert_bundle(PickableBundle::default());
     }
 }

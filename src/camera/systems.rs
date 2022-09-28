@@ -1,6 +1,6 @@
 use bevy::{input::mouse::MouseMotion, prelude::*};
 
-use crate::state::base::SimState;
+use crate::state::types::SimState;
 
 use super::{
     base::Camera,
